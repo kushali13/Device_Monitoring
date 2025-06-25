@@ -1,0 +1,568 @@
+{% include 'monitor/navbar.html' %}
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Registration Info</title>
+    <link rel="icon" href="{% static 'Cvrlogo.ico' %}" />
+    <!-- Google Font: Source Sans Pro -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,400i,700&display=swap" />
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="{%static 'plugins/fontawesome-free/css/all.min.css' %}" />
+    <!-- Theme style -->
+    <link rel="stylesheet" href="{%static 'dist/css/adminlte.min.css' %}" />
+    <!-- Apex chart -->
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts@latest"></script>
+    <!-- =============== Form ============ -->
+    <link rel="stylesheet" href="{%static 'plugins/select2/css/select2.min.css' %}">
+    <link rel="stylesheet" href="{%static 'plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css' %}">
+    <!-- DataTable -->
+    <!-- DataTable -->
+    <link rel="stylesheet" type="text/css"
+        href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.7/css/dataTables.bootstrap5.min.css">
+    <script>
+        // Function to refresh the page every 2 minutes
+        // function autoRefresh() {
+        // location.reload();
+        // }
+        // Set the auto-refresh interval to 2 minutes (120000 milliseconds)
+        // setInterval(autoRefresh, 600000);
+    </script>
+    <style>
+        /*    #loader-wrapper {*/
+        /*  position: fixed;*/
+        /*  top: 0;*/
+        /*  left: 0;*/
+        /*  width: 100%;*/
+        /*  height: 100%;*/
+        /*  background: rgba(255, 255, 255, 0.8);*/
+        /*  display: flex;*/
+        /*  justify-content: center;*/
+        /*  align-items: center;*/
+        /*  z-index: 9999;*/
+        /*}*/
+
+        /*#loader {*/
+        /*  border: 8px solid #f3f3f3;*/
+        /*  border-top: 8px solid #3498db;*/
+        /*  border-radius: 50%;*/
+        /*  width: 50px;*/
+        /*  height: 50px;*/
+        /*  animation: spin 1s linear infinite;*/
+        /*}*/
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        /*#content-wrapper {*/
+        /*  display: none;*/
+        /*}*/
+
+        .card-body {
+            padding: 0.6rem;
+        }
+
+        .card-header {
+            padding: 0.5rem 1rem;
+        }
+
+        .content-header {
+            padding: 6px 0.5rem;
+        }
+
+        .main-footer {
+            padding: 0.5rem 1rem;
+        }
+
+        .navbar {
+            padding: 2px 2px ;
+        }
+
+        table,
+        td,
+        th {
+            font-size: 13.9px;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 200;
+            font-size: 14px;
+        }
+
+        .scrollbar {
+            height: 300px;
+            overflow-y: auto;
+        }
+
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+            background-color: #ADB5BD;
+            border-radius: 5px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            border-radius: 5px;
+            background: linear-gradient(to bottom, #B8B8B8 0%, #8F8F8F 100%);
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(to bottom, #8F8F8F 0%, #B8B8B8 100%);
+        }
+
+        ::-webkit-scrollbar-track {
+            background-color: #f5f5f5;
+            border-radius: 1px;
+        }
+
+        .card-title {
+            font-size: 1.5rem;
+            font-weight: 400;
+            margin: 0;
+        }
+
+        .bg {
+            background: linear-gradient(to bottom, #2196F3, #0D47A1);
+            border: none;
+        }
+
+        .bg:hover {
+            transition: 0.3s;
+            background: linear-gradient(to top, #0088f5, #01378a);
+        }
+
+        .fixed-header {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            /* Adjust the z-index to make sure it appears above other elements */
+        }
+
+        .table-container {
+            overflow-x: auto;
+            overflow-y: auto;
+            /* Enable vertical scrolling for the tbody */
+            max-height: 480px;
+            /* Set the maximum height of the tbody */
+
+        }
+
+        @media (max-width: 768px) {
+            .table-container {
+                overflow-x: auto;
+            }
+        }
+
+        @media print {
+            body * {
+                visibility: hidden;
+            }
+
+            table,
+            table * {
+                visibility: visible;
+
+            }
+
+            th {
+                font-weight: 200;
+                font-size: 14px;
+            }
+
+            td {
+
+                border-color: inherit;
+                border-style: solid;
+                border-width: 0;
+                font-size: 10px;
+            }
+
+            table {
+                position: absolute;
+                left: 0;
+                top: 0;
+            }
+        }
+
+        .table td,
+        .table th {
+            padding: 0.3rem;
+            vertical-align: center;
+            border-top: 1px solid #dee2e6;
+        }
+
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+
+<body class="hold-transition sidebar-mini layout-fixed">
+    <!-- Loader -->
+    <!--<div id="loader-wrapper">-->
+    <!--  <div id="loader"></div>-->
+    <!--</div>-->
+    <div class="wrapper">
+        <!-- Preloader 
+        <div class="preloader flex-column justify-content-center align-items-center">
+            <img class="animation__shake" src="./cienciaslogo (2).png" alt="AdminLTELogo" height="100" width="100" />
+        </div>-->
+        <!-- ============Content Wrapper. Contains page content========= -->
+        <div class="content-wrapper" id="content-wrapper">
+            <!-- Content Header (Page header) -->
+            <div class="content-header">
+                <div class="container-fluid">
+                    <div class="row mb-2">
+                        <div class="col-sm-6">
+                            <h1 class="m-0">Registered Assets</h1>
+                        </div>
+                        <!-- /.col -->
+                        <div class="col-sm-6" style="padding-top: 5px;">
+                            <ol class="breadcrumb float-sm-right">
+                                <li class="breadcrumb-item"><a href="{% url 'index'%}">Home</a></li>
+                                <li class="breadcrumb-item">Assets</li>
+                                <li class="breadcrumb-item active">Registration Info</li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /.content-header -->
+            <!-- Main content -->
+            <section class="content">
+                <div class="container-fluid">
+                    <!-- =====Form===== -->
+                    <div class="card card-default  shadow">
+                        <div class="card-body">
+                            <form id="myform" method="POST">
+                                {% csrf_token %}
+                                <div class="row">
+                                    <div class="col-md-2">
+                                        <div class="form-group">
+                                            <label>District</label>
+                                            <select class="form-control select2bs4" style="width: 100%" id="district" name="district" onchange="document.getElementById('myform').submit();">
+                                                <option value="">Please Select</option>
+                                                {% for d in districts %}
+                                                    <option value="{{ d }}" {% if selected_district == d %}selected{% endif %}>{{ d }}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <!-- Block Dropdown -->
+                                    <div class="col-md-2">
+                                        <div class="form-group">
+                                            <label>Block</label>
+                                            <select class="form-control select2bs4" style="width: 100%" name="block"
+                                                onchange="document.getElementById('myform').submit();">
+                                            <option value="">Select Block</option>
+                                                {% for b in blocks %}
+                                                    <option value="{{ b }}" {% if selected_block == b %}selected{% endif %}>{{ b }}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <div class="form-group">
+                                            <label>Village</label>
+                                            <select class="form-control select2bs4" style="width: 100%" name="village"
+                                                onchange="document.getElementById('myform').submit();">
+                                                <option value="">Select Village</option>
+                                                    {% for v in villages %}
+                                                        <option value="{{ v }}" {% if selected_village == v %}selected{% endif %}>{{ v }}</option>
+                                                    {% endfor %}
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <div class="form-group">
+                                            <label>School Name</label>
+                                            <select class="form-control select2bs4" style="width: 100%" name="school"onchange="document.getElementById('myform').submit();">
+                                                <option value="">Select School</option>
+                                                    {% for s in schools %}
+                                                        <option value="{{ s }}" {% if selected_school == s %}selected{% endif %}>{{ s }}</option>
+                                                    {% endfor %}
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4"></div>
+                                    <div class="col-md-2">
+                                        <div class="form-group">
+                                            <label>DISE Code</label>
+                                                <input type="text" name="dise" class="form-control" placeholder="Please Type" style="width: 100%"value="{{ dise }}">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <div class="form-group ">
+                                            <label>Asset ID</label>
+                                                <input type="text" name="asset" class="form-control"placeholder="Please Type" style="width: 100%" value="{{ asset }}">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <div class="form-group">
+                                            <label>From Date</label>
+                                            <input type="date" class="form-control" name="fdate" value="{{ fdate|default:'' }}">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <div class="form-group">
+                                            <label>To Date</label>
+                                            <input type="date" class="form-control" name="tdate" value="{{ tdate|default:'' }}">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2 pt-1">
+                                        <div class="form-group pt-1 ">
+                                            <input type="submit"
+                                                class="btn bg rounded-1 btn-primary mt-4 btn-md w-40 float-left  "
+                                                name="generate" id="toggleButton" value="Search">
+                                        </div>
+                                        <div class="form-group pt-1">
+                                            <input type="submit" style="margin-top:4px; margin-left:18px"
+                                                class="btn bg rounded-1 btn-primary btn-md w-40 float-left  "
+                                                name="clear" value="Clear">
+                                        </div>
+                                    </div> 
+                                    <!--<div class="col-md-2 pt-1">-->
+                                        <!--form group-->
+                                    <!--    <div class="form-group ">-->
+                                            <!--submit button-->
+                                    <!--        <input type="submit"-->
+                                    <!--            class="btn bg rounded-1 btn-primary mt-4 btn-md w-40 float-left  "-->
+                                    <!--            name="generate" value="Search">-->
+                                    <!--    </div>-->
+                                    <!--<div class="col-md-2 pt-1">-->
+                                    <!--    <div class="form-group pt-1">-->
+                                    <!--        <input type="submit" style="margin-top:4px; margin-left:18px"-->
+                                    <!--            class="btn bg rounded-1 btn-primary btn-md w-40 float-left  "-->
+                                    <!--            name="clear" value="Clear">-->
+                                    <!--    </div>-->
+                                    <!--</div>-->
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="row">
+                            <section class="col-lg-12">
+                                <div class="card">
+                                    <div class="card-header bg-olive">
+                                        <div class="row">
+                                            <div class="col-4">
+                                                <h3 class="card-title pt-1 float-left"><i class="fas fa-list mr-3"></i>List Of Assets</h3>
+                                            </div>
+                                            <div class="col-4"></div>
+                                            <div class="col-2">
+                                                <h5 class=" pt-2 float-right">Total Devices:
+                                                    {{ tot|default:"00" }}
+                                                </h5>
+                                            </div>
+                                            <div class="col-2">
+                                                <form method="get" action="{% url 'download_csv_asset' %}">
+                                                    <button type="submit"
+                                                        class="btn btn-warning w-100"
+                                                        {% if not asset_list %}disabled{% endif %}>
+                                                        <i class="fas fa-download"></i> Print CSV
+                                                    </button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card-body" style="width: 100%;height: auto;">
+                                        <div class="table-responsive  " style="height: auto; max-height: 540px;overflow-y: scroll;">
+                                            <div class="table-container">
+                                                <table id="myTable" class="table table-head-fixed table-striped text-nowrap  table-bordered "
+                                                 style="top: 0; width: 100%">
+                                                    <thead class="fixed-header">
+                                                        <tr>
+                                                            <th class="text-center">Sr</th>
+                                                            <th class="text-center">DISE Code</th>
+                                                            <th class="text-center">School Name</th>
+                                                            <th class="text-center">District</th>
+                                                            <th class="text-center">Block</th>
+                                                            <th class="text-center">Lab</th>
+                                                            <th class="text-center">Computer Number</th>
+                                                            <th class="text-center">Desktop Serial</th>
+                                                            <th class="text-center">TFT Serial</th>
+                                                            <th class="text-center">Webcam Serial</th>
+                                                            <th class="text-center">Headphone Serial</th>
+                                                            <th class="text-center">Switch Serial</th>
+                                                            <th class="text-center">Reg. Date</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        {% for asset in asset_list %}
+                                                            <tr>
+                                                                <td class="text-center">{{ forloop.counter }}</td>
+                                                                <td class="text-center">{{ asset.dise.dise_code }}</td>
+                                                                <td>{{ asset.dise.school_name }}</td>
+                                                                <td class="text-center">{{ asset.dise.district }}</td>
+                                                                <td class="text-center">{{ asset.dise.block }}</td>
+                                                                <td class="text-center">{{ asset.lab }}</td>
+                                                                <td class="text-center">{{ asset.pc }}</td>
+                                                                <td class="text-center">{{ asset.serial_number }}</td>
+                                                                <td class="text-center">{{ asset.tft }}</td>
+                                                                <td class="text-center">{{ asset.webcam }}</td>
+                                                                <td class="text-center">{{ asset.headphone }}</td>
+                                                                <td class="text-center">{{ asset.switch }}</td>
+                                                                <td class="text-center">{{ asset.date }}</td>
+                                                            </tr>
+                                                            {% endfor %}
+
+                                                    </tbody>
+                                                </table>
+                                            <!--</div>-->
+                                        </div>
+                                    </div>
+                                </div>
+                            </section>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- /.content-wrapper -->
+        <!-- =====Footer===== -->
+       <!--<footer class="main-footer">-->
+       <!--     <strong>Copyright &copy; 2023-2025-->
+       <!--             <a href="https://cienciasvr.com/" target="_blank" style=" color:#3638c6;"><b>Ciencias IN VR</b></a>.</strong>-->
+       <!--         All rights reserved.-->
+       <!--         <div class="float-right d-none d-sm-inline-block">-->
+       <!--             <b>Version</b> 0.0.1-->
+       <!--         </div>-->
+       <!-- </footer>-->
+    </div>
+    <!-- Control Sidebar 
+        <aside class="control-sidebar control-sidebar-dark">-->
+    <!-- Control sidebar content goes here 
+        </aside>-->
+    <!-- /.control-sidebar -->
+    <!-- </div> -->
+    <script>
+        function change() {
+            document.getElementById("myform").submit();
+        }
+    </script>
+     <script src="{%static 'plugins/jquery/jquery.min.js'%}"></script>
+    <!-- jQuery UI 1.11.4 -->
+    <script src="{%static 'plugins/jquery-ui/jquery-ui.min.js'%}"></script>
+    
+    <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.7/js/dataTables.bootstrap5.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#myTable').DataTable({
+                "pageLength": 10,
+                "lengthMenu": [10, 25, 50, 75, 100], // Optional: To include different page lengths in the dropdown
+                "paging": true, // Enable pagination
+                "ordering": false, // Enable sorting
+                "searching": true, // Enable search box
+                "info": true, // Show information
+                //"scrollX": true, // Enable horizontal scrolling
+                "responsive": true,
+            });
+        });
+    </script>
+
+    <script>
+        function printTable() {
+            window.print();
+        }
+
+        function exportTableToCSV(filename) {
+            // Get the array data from PHP
+            var assetList = assetListJSON;
+
+            // Create a CSV string
+            var csvString = '';
+
+            // Add header row
+            csvString += Object.keys(assetList[0]).join(',') + '\n';
+
+            // Add data rows
+            assetList.forEach(function (item) {
+                csvString += Object.values(item).join(',') + '\n';
+            });
+
+            // Create a download link and click it to download the CSV file
+            var link = document.createElement('a');
+            link.href = 'data:text/csv;charset=utf-8,' + encodeURIComponent(csvString);
+            link.download = filename;
+            link.style.display = 'none';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+    </script>
+
+    <!-- ./wrapper -->
+    <!-- jQuery -->
+
+    <!-- jQuery UI 1.11.4 -->
+    <script src="{%static 'plugins/jquery-ui/jquery-ui.min.js' %}"></script>
+    <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
+    <script>
+        //  $.widget.bridge("uibutton", $.ui.button);
+    </script>
+    <!-- Bootstrap 4 -->
+    <script src="{%static 'plugins/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+    <!-- AdminLTE App -->
+    <script src="{%static 'dist/js/adminlte.js' %}"></script>
+    <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
+    <script src="{%static 'dist/js/pages/dashboard.js' %}"></script>
+    <!-- DataTable -->
+    <!-- ======================== FORM ====================== -->
+    <script src="{%static 'plugins/select2/js/select2.full.min.js' %}"></script>
+    <script>
+        //Initialize Select2 Elements
+        $('.select2').select2();
+        //Initialize Select2 Elements
+        $('.select2bs4').select2({
+            theme: 'bootstrap4',
+            placeholder: 'Please Select'
+        });
+    </script>
+<!-- jQuery (required first) -->
+<!-- 1. jQuery (first) -->
+
+<!-- 2. jQuery UI (for sortable) -->
+<script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
+
+<!-- 3. DataTables (optional but required for DataTable) -->
+
+<!-- 4. Moment.js (for date manipulation) -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+
+<!-- 5. Bootstrap (required by Summernote) -->
+<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+
+<!-- 6. Summernote (optional) -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.20/summernote-bs4.min.css" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.20/summernote-bs4.min.js"></script>
+
+<!-- 7. Custom JavaScript (after dependencies) -->
+<script>
+    document.querySelector('select[name="district"]').addEventListener('change', () => {
+        console.log('District changed. Submitting form...');
+        document.getElementById('myform').submit();
+    });
+</script>
+    
+</body>
+
+</html>

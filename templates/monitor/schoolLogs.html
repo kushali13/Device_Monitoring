@@ -1,0 +1,613 @@
+{% include 'monitor/navbar.html' %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Activity</title>
+    <link rel="icon" type="image/png" href="{%static './cvrlogo.ico'%}" />
+    <!-- Google Font: Source Sans Pro -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,400i,700&display=swap" />
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="{%static 'plugins/fontawesome-free/css/all.min.css'%}" />
+    <!-- Ionicons 
+    <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css'%}" />-->
+    <!-- Tempusdominus Bootstrap 4 
+    <link rel="stylesheet" href="{%static 'plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css'%}" />-->
+    <!-- iCheck 
+    <link rel="stylesheet" href="{%static 'plugins/icheck-bootstrap/icheck-bootstrap.min.css'%}" />-->
+    <!-- JQVMap 
+    <link rel="stylesheet" href="{%static 'plugins/jqvmap/jqvmap.min.css'%}" />-->
+    <!-- Theme style -->
+    <link rel="stylesheet" href="{%static 'dist/css/adminlte.min.css'%}" />
+    <!-- overlayScrollbars 
+    <link rel="stylesheet" href="{%static 'plugins/overlayScrollbars/css/OverlayScrollbars.min.css'%}" />-->
+    <!-- Daterange picker 
+    <link rel="stylesheet" href="{%static 'plugins/daterangepicker/daterangepicker.css'%}" />-->
+    <!-- summernote 
+    <link rel="stylesheet" href="{%static 'plugins/summernote/summernote-bs4.min.css'%}" />-->
+    <!-- Apex chart -->
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts@latest"></script>
+    <!-- =============== Form ============ -->
+    <link rel="stylesheet" href="{%static 'plugins/select2/css/select2.min.css'%}">
+    <link rel="stylesheet" href="{%static 'plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css'%}">
+    <!-- DataTable -->
+    <link rel="stylesheet" type="text/css"
+        href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.7/css/dataTables.bootstrap5.min.css">
+    
+    <style>
+        .card-body {
+            padding: 0.6rem;
+        }
+
+        .card-header {
+            padding: 0.5rem 1rem;
+        }
+
+        .content-header {
+            padding: 6px 0.5rem;
+        }
+
+        .main-footer {
+            padding: 0.5rem 1rem;
+        }
+
+        .navbar {
+            padding: 2px 2px !important;
+        }
+
+        table,
+        td,
+        th {
+            font-size: 13.9px;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 200;
+            font-size: 14px;
+        }
+
+        /*scrollbar*/
+        .scrollbar {
+            height: 300px;
+            overflow-y: auto;
+        }
+
+        /* Set the width and color of the scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+            background-color: #ADB5BD;
+            border-radius: 5px;
+        }
+
+        /* Add the thumb (the part you drag) */
+        ::-webkit-scrollbar-thumb {
+            border-radius: 5px;
+            background: linear-gradient(to bottom, #B8B8B8 0%, #8F8F8F 100%);
+        }
+
+        /* Change the color of the thumb on hover */
+        ::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(to bottom, #8F8F8F 0%, #B8B8B8 100%);
+        }
+
+        /* Add the track (the empty space around the thumb) */
+        ::-webkit-scrollbar-track {
+            background-color: #f5f5f5;
+            border-radius: 1px;
+        }
+
+        .card-title {
+            float: left;
+            font-size: 1.5rem;
+            font-weight: 400;
+            margin: 0;
+        }
+
+        /* .hidden{
+       display: none; 
+      } */
+        .bg {
+            background: linear-gradient(to bottom, #2196F3, #0D47A1);
+            border: none;
+        }
+
+        .bg:hover {
+            transition: 0.3s;
+            background: linear-gradient(to top, #0088f5, #01378a);
+        }
+
+        @media print {
+            body * {
+                visibility: hidden;
+            }
+
+            table,
+            table * {
+                visibility: visible;
+
+            }
+
+            th {
+                font-weight: 200;
+                font-size: 14px;
+            }
+
+            td {
+
+                border-color: inherit;
+                border-style: solid;
+                border-width: 0;
+                font-size: 10px;
+            }
+
+            table {
+                position: absolute;
+                left: 0;
+                top: 0;
+            }
+        }
+
+        .table td,
+        .table th {
+            padding: 0.3rem;
+            vertical-align: center;
+            border-top: 1px solid #dee2e6;
+        }/* Styles for the overlay */
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+        }
+
+        /* Styles for the popup */
+        .popup {
+            background-color: #fff;
+            padding: 50px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+            text-align: center;
+            max-width: 80%;
+            position: relative;
+        }
+
+        /* Style for the close button */
+        .close-btn {
+            cursor: pointer;
+            color: #333;
+            font-size: 18px;
+            font-weight: bold;
+            position: absolute;
+            top: 10px;
+            right: 10px;
+        }
+    </style>
+</head>
+
+<body class="hold-transition sidebar-mini layout-fixed">
+    <div class="wrapper">
+        <!-- Preloader 
+        <div class="preloader flex-column justify-content-center align-items-center">
+            <img class="animation__shake" src="./cienciaslogo (2).png" alt="AdminLTELogo" height="100" width="100" />
+        </div>-->
+        <!-- ============Content Wrapper. Contains page content========= -->
+        <div class="content-wrapper">
+            <!-- Content Header (Page header) -->
+            <div class="content-header">
+                <div class="container-fluid">
+                    <div class="row mb-2">
+                        <div class="col-sm-6">
+                            <h1 class="m-0">Application On-Off Timing</h1>
+                        </div>
+                        <!-- /.col -->
+                        <div class="col-sm-6">
+                            <ol class="breadcrumb float-sm-right">
+                                <li class="breadcrumb-item"><a href="{%url 'index'%}">Home</a></li>
+                                <li class="breadcrumb-item">Activity</li>
+                                <li class="breadcrumb-item active">Application On-Off Timing</li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /.content-header -->
+            <!-- Main content -->
+            <section class="content">
+                <div class="container-fluid">
+                    <!-- =====Form===== -->
+
+                    <div class="card card-default  shadow">
+                        <div class="card-body">
+                            <form id="myform" method="POST">
+                                {% csrf_token %}
+                                <div class="row">
+                                    <div class="col-md-2">
+                                        <div class="form-group">
+                                            <label>DISE Code<span style="color:red;">*</span></label>
+                                            <input type="text" name="dise" class="form-control" placeholder="Please Type"
+                                                    style="width: 100%" value="{{ dise_code|default:'' }}"
+                                                    onchange="document.getElementById('myform').submit();">  
+                                        </div>
+                                       
+                                    </div>
+                                    <div class="col-md-2">
+                                        <div class="form-group">
+                                            <label>District<span style="color:red;">*</span></label>
+                                            <input type="text" value="{{selected_district}}" class="form-control"
+                                                style="width: 100%" 
+                                                id="district" name="district"  readonly>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <div class="form-group">
+                                            <label>Block<span style="color:red;">*</span></label>
+                                            <input type="text" value="{{selected_block}}" class="form-control"style="width: 100%" 
+                                                    id="block" name="block"  readonly>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label>Village<span style="color:red;">*</span></label>
+                                            <input type="text" value="{{selected_village}}" class="form-control"style="width: 100%" 
+                                                    id="village" name="village"  readonly>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label>School Name<span style="color:red;">*</span></label>
+                                            <input type="text" value="{{selected_school}}" class="form-control"style="width: 100%" 
+                                                    id="school" name="school" readonly>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="col-md-8"></div>
+                                    <div class="col-md-2 col-sm-4">
+                                        <div class="form-group">
+                                            <input type="submit" class="btn bg rounded-1 btn-primary btn-md w-100"
+                                                name="device" id="toggleButton" value="Device">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2 col-sm-4">
+                                        <div class="form-group">
+                                            <input type="submit" class="btn bg rounded-1 btn-primary btn-md w-100"
+                                                name="application" id="toggleButton" value="Application">
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <!-- <div id="hiddenRow" style=<?php echo isset($_POST['generate']) ? "'display: block;'" : "'display: none;'" ?>> -->
+                    <div id="hiddenRow" style="display: none;">
+                        <div class="row">
+                            <section class="col-lg-6">
+                                <div class="card card-row card-info">
+                                    <div class="card-header">
+                                        <h3 class="card-title"><i class="fas fa-clock mr-1"></i>
+                                            Most Applications Used
+                                        </h3>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="card card-primary card-outline">
+                                            <div class="card-header">
+                                                <h5 class="card-title">Youtube</h5>
+                                                <div class="card-tools">
+                                                    <p class="btn btn-tool ">5hrs</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="card card-success card-outline">
+                                            <div class="card-header">
+                                                <h5 class="card-title">Chrome</h5>
+                                                <div class="card-tools">
+                                                    <p class="btn btn-tool ">4hrs</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="card card-warning card-outline">
+                                            <div class="card-header">
+                                                <h5 class="card-title">Gmail</h5>
+                                                <div class="card-tools">
+                                                    <p class="btn btn-tool ">3hrs</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="card card-danger card-outline">
+                                            <div class="card-header">
+                                                <h5 class="card-title">Drive</h5>
+                                                <div class="card-tools">
+                                                    <p class="btn btn-tool ">2hrs</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </section>
+                            <section class="col-lg-6">
+                                <div class="card card-row card-info">
+                                    <div class="card-header">
+                                        <h3 class="card-title"><i class="fas fa-sync-alt mr-1"></i>
+                                            Recent Applications Used
+                                        </h3>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="card card-primary card-outline">
+                                            <div class="card-header">
+                                                <h5 class="card-title">Instagram</h5>
+                                                <div class="card-tools">
+                                                    <p class="btn btn-tool "> 20mins ago</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="card card-success card-outline">
+                                            <div class="card-header">
+                                                <h5 class="card-title">Facebook</h5>
+                                                <div class="card-tools">
+                                                    <p class="btn btn-tool ">30mins ago</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="card card-warning card-outline">
+                                            <div class="card-header">
+                                                <h5 class="card-title">Whatsapp</h5>
+                                                <div class="card-tools">
+                                                    <p class="btn btn-tool ">5mins ago</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="card card-danger card-outline">
+                                            <div class="card-header">
+                                                <h5 class="card-title">Snapchat</h5>
+                                                <div class="card-tools">
+                                                    <p class="btn btn-tool ">1hr ago</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </section>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="row">
+                            <section class="col-lg-12">
+                                <div class="card">
+                                    <div class="card-header bg-olive">
+                                        <div class="row">
+                                            <div class="col-lg-3 col-md-2 col-sm-6">
+                                                <h3 class="card-title pt-1"><i class="fas fa-list mr-3"></i>List of Activities</h3>
+                                            </div>
+                                            <div class="col-lg-5 col-md-2 col-sm-0"></div>
+                                            <div class="col-lg-2 col-md-4 col-sm-2 ">
+                                                <!--<div class="input-group rounded-1">-->
+                                                <!--    <input type="email" class="form-control" placeholder="Enter your email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$">-->
+                                                <!--    <button class="btn btn-primary " type="button">Export</button>-->
+                                                <!--</div>-->
+                                            </div>
+                                            <div class="col-lg-1 col-md-2 col-sm-2  ">
+                                                <!--<button type="submit" class="btn btn-warning w-100" onclick="printTable()">-->
+                                                <!--    <i class="fas fa-download"></i> Print PDF-->
+                                                <!--</button>-->
+                                            </div>
+                                            <div class="col-lg-1 col-md-2 col-sm-2">
+                                                <form method="get" action="{% url 'download_csv_activity' %}">
+                                                    <button type="submit"
+                                                        class="btn btn-warning w-100"
+                                                        {% if timing_logs|length == 0 %}disabled{% endif %}>
+                                                        <i class="fas fa-download"></i> Print CSV
+                                                    </button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card-body shadow">
+                                        <div class="table-responsive p-0">
+                                            <table class="table table-head-fixed table-bordered table-striped text-nowrap" id="myTable" >
+                                                        
+                                                        <thead>
+                                                            <tr>
+                                                                <th class="text-center">Sr</th>
+                                                                {%if count%}<th class="text-center">Application</th>{%endif%}
+                                                                <th class="text-center">Serial Number</th>
+                                                                <th class="text-center">Date</th>
+                                                                <th class="text-center">Start Time</th>
+                                                                <th class="text-center">End Time</th>
+                                                                <th class="text-center">Duration</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>{% for log in timing_logs %}
+                                                    <tr>
+                                                        <td class="text-center">{{ forloop.counter }}</td>
+                                                        {%if count%}<td class="text-center">{{ log.package_name }}</td>{%endif%}
+                                                        <td class="text-center">{{ log.serial_number }}</td>
+                                                        <td class="text-center">{{ log.date }}</td>
+                                                        <td class="text-center">{{ log.start_time }}</td>
+                                                        <td class="text-center">{{ log.end_time }}</td>
+                                                        <td class="text-center">{{ log.duration }}</td>
+                                                    </tr>
+                                                {% endfor %}
+                                            </tbody></table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </section>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+        <!-- /.content-wrapper -->
+        <!-- =====Footer===== -->
+        <footer class="main-footer">
+            <strong>Copyright &copy; 2023-2025
+                <a href="https://cienciasvr.com/" target="_blank">Ciencias IN VR</a>.</strong>
+            All rights reserved.
+            <div class="float-right d-none d-sm-inline-block">
+                <b>Version</b> 0.0.1
+            </div>
+        </footer>
+
+        <!-- Control Sidebar 
+        <aside class="control-sidebar control-sidebar-dark">-->
+        <!-- Control sidebar content goes here 
+        </aside>-->
+        <!-- /.control-sidebar -->
+    </div>
+    <script>
+        function change() {
+            document.getElementById("myform").submit();
+        }
+        function changeTxt() {
+            document.getElementById("myform").submit();
+        }
+    </script>
+    <!-- ./wrapper -->
+    <!-- jQuery -->
+    <script src="{%static 'plugins/jquery/jquery.min.js'%}"></script>
+    <!-- jQuery UI 1.11.4 -->
+    <script src="{%static 'plugins/jquery-ui/jquery-ui.min.js'%}"></script>
+    <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
+    <script>
+        //  $.widget.bridge("uibutton", $.ui.button);
+    </script>
+    <!-- Bootstrap 4 -->
+    <script src="{%static 'plugins/bootstrap/js/bootstrap.bundle.min.js'%}"></script>
+    <!-- ChartJS 
+    <script src="plugins/chart.js/Chart.min.js"></script>-->
+    <!-- Sparkline 
+    <script src="plugins/sparklines/sparkline.js"></script>-->
+    <!-- JQVMap 
+    <script src="plugins/jqvmap/jquery.vmap.min.js"></script>
+    <script src="plugins/jqvmap/maps/jquery.vmap.usa.js"></script>-->
+    <!-- jQuery Knob Chart 
+    <script src="plugins/jquery-knob/jquery.knob.min.js"></script>-->
+    <!-- daterangepicker 
+    <script src="plugins/moment/moment.min.js"></script>
+    <script src="plugins/daterangepicker/daterangepicker.js"></script>-->
+    <!-- Tempusdominus Bootstrap 4 
+    <script src="plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>-->
+    <!-- Summernote 
+    <script src="plugins/summernote/summernote-bs4.min.js"></script>-->
+    <!-- overlayScrollbars 
+    <script src="plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>-->
+    <!-- AdminLTE App -->
+    <script src="{%static 'dist/js/adminlte.js'%}"></script>
+    <!-- AdminLTE for demo purposes 
+    <script src="dist/js/demo.js"></script> -->
+    <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
+    <script src="{%static 'dist/js/pages/dashboard.js'%}"></script>
+    <!-- ======================== FORM ====================== -->
+    <script src="{%static 'plugins/select2/js/select2.full.min.js'%}"></script>
+    <!-- DataTable -->
+    <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.7/js/dataTables.bootstrap5.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#myTable').DataTable({
+                "pageLength": 10,
+                "lengthMenu": [10, 25, 50, 75, 100], // Optional: To include different page lengths in the dropdown
+                "paging": true, // Enable pagination
+                "ordering": false, // Enable sorting
+                "searching": true, // Enable search box
+                "info": true, // Show information
+                //"scrollX": true, // Enable horizontal scrolling
+                "responsive": true,
+            });
+        });
+    </script>
+    <script>
+        function printTable() {
+            window.print();
+        }
+
+        // function exportTableToCSV(filename) {
+        //     // Get the full table reference (without filtering by visible rows)
+        //     var table = document.getElementById("myTable"); // Ensure correct table ID
+        //     var rows = table.getElementsByTagName("tr"); // Fetch all rows, including hidden ones
+        //     var data = [];
+        
+        //     for (var i = 0; i < rows.length; i++) {
+        //         var row = [],
+        //             cols = rows[i].querySelectorAll("td, th"); // Select all columns
+        
+        //         for (var j = 0; j < cols.length; j++) {
+        //             row.push(cols[j].innerText);
+        //         }
+        //         data.push(row.join(",")); // Convert row array to CSV format
+        //     }
+        
+        //     // Create a CSV string
+        //     var csvString = data.join("\n");
+        
+        //     // Create a download link and click it to download the CSV file
+        //     var link = document.createElement("a");
+        //     link.href = "data:text/csv;charset=utf-8," + encodeURIComponent(csvString);
+        //     link.download = filename;
+        //     document.body.appendChild(link);
+        //     link.click();
+        //     document.body.removeChild(link);
+        // }
+        function exportTableToCSV(filename) {
+            var table = $("#myTable").DataTable(); // Get DataTable instance
+            var data = [];
+        
+            // Fetch all rows, even those not currently displayed
+            table.rows().every(function () {
+                var row = this.data();
+                data.push(row.join(","));
+            });
+        
+            // Create CSV
+            var csvString = data.join("\n");
+            var link = document.createElement("a");
+            link.href = "data:text/csv;charset=utf-8," + encodeURIComponent(csvString);
+            link.download = filename;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+
+    </script>
+    <script>
+        // document.getElementById('toggleButton').addEventListener('click', function() {
+        // var row = document.getElementById('hiddenRow');
+        // var table = document.getElementById('hiddenTable');
+        // if (row.style.display === 'none') {
+        //     row.style.display = 'block';
+        //     table.style.display = 'block';
+        // } else {
+        //     row.style.display = 'none';
+        //     table.style.display = 'none';
+        // }
+        // });
+        function closePopup() {
+            document.getElementById("warningPopup").style.display = "none";
+        }
+    </script>
+    <script>
+        //Initialize Select2 Elements
+        $('.select2').select2();
+        //Initialize Select2 Elements
+        $('.select2bs4').select2({
+            theme: 'bootstrap4',
+            placeholder: 'Please Select'
+        });
+    </script>
+</body>
+
+</html>

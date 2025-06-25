@@ -1,0 +1,124 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet" />
+    <title>Delete</title>
+    <link rel="icon" href="{% static 'Cvrlogo.ico' %}" />
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f4f6f9;
+            margin: 0;
+            padding: 0;
+        }
+
+        h1 {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        table {
+            margin: 0 auto;
+            border-collapse: collapse;
+            width: 30%;
+            background-color:white;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        th,
+        td {
+            padding: 10px;
+            text-align: left;
+        }
+
+        th {
+            background-color:white;
+        }
+
+        tr {
+            background-color: white;
+        }
+
+        input[type="text"],
+        input[type="number"],
+        input[type="date"],
+        button {
+            padding: 8px;
+            margin: 5px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+         button {
+            background: linear-gradient(to bottom, #2196F3, #0D47A1);
+            border: none;
+            color: white;
+            cursor: pointer;
+            font-size: 15px;
+        }
+
+        button:hover {
+            transition: 0.3s;
+            background: linear-gradient(to top, #0088f5, #01378a);
+        }
+    </style>
+</head>
+
+
+<body ng-app="myApp" ng-controller="myController">
+    <h1> DELETE DETAILS </h1><br>
+    <table>
+        <form action="{% url 'delete_data' %}" method="post">
+            {% csrf_token %}
+            <tr>
+                <th colspan="7">SERIAL NUMBER: <input type="text" name="serial_number" required
+                        autocomplete="off"></th>
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><button> DELETE </button></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+        </form>
+    </table>
+</body>
+<script>
+document.getElementById('deleteForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+
+    const serial = document.getElementById('serial_number').value;
+
+    fetch("/admin-site/api/form-data/", {
+        method: "POST",
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': '{{ csrf_token }}'
+        },
+        body: JSON.stringify({
+            action: "DeleteData",
+            serial_number: serial
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        alert(data.message || data.error);
+        if (data.message) {
+            window.location.href = "{% url 'admin_home' %}";
+        }
+    })
+    .catch(error => console.error("Error:", error));
+});
+</script>
+</html>

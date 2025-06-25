@@ -1,0 +1,39 @@
+{
+  "entries": [
+    {
+      "serial_number": "K16AN0PAIV",
+      "date": "10/08/2022",
+      "start_time": "14:00:20",
+      "end_time": "14:05:20",
+      "duration": "00:05:00"
+    },
+    {
+      "serial_number": "K16AN0PAIV",
+      "date": "12/24/2021",
+      "start_time": "14:30:21",
+      "end_time": "14:35:21",
+      "duration": "00:05:00"
+    },
+    {
+      "serial_number": "K16AN0PAIV",
+      "date": "01/20/2022",
+      "start_time": "09:15:57",
+      "end_time": "09:20:57",
+      "duration": "00:05:00"
+    },
+    {
+      "serial_number": "K16AN0PAIV",
+      "date": "05/20/2020",
+      "start_time": "13:21:15",
+      "end_time": "13:26:15",
+      "duration": "00:05:00"
+    },
+    {
+      "serial_number": "K16AN0PAIV",
+      "date": "08/29/2025",
+      "start_time": "13:58:45",
+      "end_time": "14:03:45",
+      "duration": "00:05:00"
+    }
+  ]
+}

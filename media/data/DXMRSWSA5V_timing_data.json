@@ -1,0 +1,39 @@
+{
+  "entries": [
+    {
+      "serial_number": "DXMRSWSA5V",
+      "date": "03/14/2021",
+      "start_time": "11:22:47",
+      "end_time": "11:27:47",
+      "duration": "00:05:00"
+    },
+    {
+      "serial_number": "DXMRSWSA5V",
+      "date": "06/05/2024",
+      "start_time": "12:34:49",
+      "end_time": "12:39:49",
+      "duration": "00:05:00"
+    },
+    {
+      "serial_number": "DXMRSWSA5V",
+      "date": "07/12/2023",
+      "start_time": "09:58:21",
+      "end_time": "10:03:21",
+      "duration": "00:05:00"
+    },
+    {
+      "serial_number": "DXMRSWSA5V",
+      "date": "08/24/2025",
+      "start_time": "14:08:43",
+      "end_time": "14:13:43",
+      "duration": "00:05:00"
+    },
+    {
+      "serial_number": "DXMRSWSA5V",
+      "date": "05/03/2022",
+      "start_time": "09:22:32",
+      "end_time": "09:27:32",
+      "duration": "00:05:00"
+    }
+  ]
+}

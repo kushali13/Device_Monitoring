@@ -1,0 +1,5 @@
+Total devices in database: 17
+Devices originally missing: 17
+Devices newly created: 17
+Devices updated: 0
+Total devices now with data: 17

@@ -1,0 +1,39 @@
+{
+  "entries": [
+    {
+      "serial_number": "SAKAAJ00A4",
+      "date": "03/16/2025",
+      "start_time": "11:19:20",
+      "end_time": "11:24:20",
+      "duration": "00:05:00"
+    },
+    {
+      "serial_number": "SAKAAJ00A4",
+      "date": "12/01/2025",
+      "start_time": "14:35:40",
+      "end_time": "14:40:40",
+      "duration": "00:05:00"
+    },
+    {
+      "serial_number": "SAKAAJ00A4",
+      "date": "07/15/2022",
+      "start_time": "14:23:06",
+      "end_time": "14:28:06",
+      "duration": "00:05:00"
+    },
+    {
+      "serial_number": "SAKAAJ00A4",
+      "date": "12/27/2022",
+      "start_time": "10:02:48",
+      "end_time": "10:07:48",
+      "duration": "00:05:00"
+    },
+    {
+      "serial_number": "SAKAAJ00A4",
+      "date": "01/16/2025",
+      "start_time": "10:19:36",
+      "end_time": "10:24:36",
+      "duration": "00:05:00"
+    }
+  ]
+}

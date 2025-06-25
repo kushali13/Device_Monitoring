@@ -1,0 +1,39 @@
+{
+  "entries": [
+    {
+      "serial_number": "PEATSERGYV",
+      "date": "02/22/2022",
+      "start_time": "11:07:43",
+      "end_time": "11:12:43",
+      "duration": "00:05:00"
+    },
+    {
+      "serial_number": "PEATSERGYV",
+      "date": "02/01/2021",
+      "start_time": "13:16:29",
+      "end_time": "13:21:29",
+      "duration": "00:05:00"
+    },
+    {
+      "serial_number": "PEATSERGYV",
+      "date": "08/25/2022",
+      "start_time": "12:12:24",
+      "end_time": "12:17:24",
+      "duration": "00:05:00"
+    },
+    {
+      "serial_number": "PEATSERGYV",
+      "date": "03/01/2025",
+      "start_time": "11:57:00",
+      "end_time": "12:02:00",
+      "duration": "00:05:00"
+    },
+    {
+      "serial_number": "PEATSERGYV",
+      "date": "01/28/2023",
+      "start_time": "12:26:47",
+      "end_time": "12:31:47",
+      "duration": "00:05:00"
+    }
+  ]
+}

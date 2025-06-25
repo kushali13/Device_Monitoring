@@ -1,0 +1,194 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<!-- Device Serial Number = comp_number(Database)
+    Desktop Serial = serial_number(Database) -->
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet" />
+    <title>Insert</title>
+    <link rel="icon" href="{% static 'Cvrlogo.ico' %}" />
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f6f9;
+        }
+
+        h1 {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        table {
+            margin: 0 auto;
+            border-collapse: collapse;
+            width: 80%;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        th,
+        td {
+            padding: 10px;
+            text-align: left;
+        }
+
+        th {
+            background-color:white;
+        }
+
+        tr {
+            background-color: white;
+        }
+
+        input[type="text"],
+        input[type="number"],
+        input[type="date"],
+        button {
+            padding: 8px;
+            margin: 5px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        button {
+            background: linear-gradient(to bottom, #2196F3, #0D47A1);
+            border: none;
+            color: white;
+            cursor: pointer;
+            font-size: 15px;
+        }
+
+        button:hover {
+            transition: 0.3s;
+            background: linear-gradient(to top, #0088f5, #01378a);
+        }
+
+        input[disabled] {
+        background-color: #e9ecef        
+        }
+    </style>
+</head>
+
+
+<body ng-app="myApp" ng-controller="myController">
+    <h1> INSERT DETAILS </h1><br>
+    <!-- Dise code to select data -->
+    <table>
+        <div style="border-radius:10px;" >
+        <form method="post" action="{% url 'load_school_data' %}">
+            {% csrf_token %}
+            <tr>
+                <th>DISE CODE: <input type="text" name="dise_code" required autocomplete="off"></th>
+                <th><button style="margin-top:28px;" type="submit"> GET DETAILS </button></th>
+            </tr>
+        </form>
+        </div>
+</table>
+<br>
+
+<!-- Load data into field -->
+<table>
+    <form method="post" action="{% url 'insert_data' %}">
+        {% csrf_token %}
+        <input type="hidden" name="dise_code" value="{{ form_data.dise_code|default:'' }}">
+        
+        <tr>
+            <td>DISTRICT:</td>
+            <td><input type="text" name="district" value="{{ form_data.district|default:'' }}" required disabled autocomplete="off"></td>
+            <td></td>
+            <td></td>
+            <td>BLOCK:</td>
+            <td><input type="text" name="block" value="{{ form_data.block|default:'' }}" required disabled autocomplete="off"></td>
+        </tr>
+        <tr>
+            <td>VILLAGE:</td>
+            <td><input type="text" name="village" value="{{ form_data.village|default:'' }}" required disabled autocomplete="off"></td>
+            <td></td>
+            <td></td>
+            <td>SCHOOL:</td>
+            <td><input type="text" name="school" value="{{ form_data.school|default:'' }}" required disabled autocomplete="off"></td>
+        </tr>
+        <tr>
+            <td>COMPUTER NUMBER:</td>
+            <td><input type="text" name="comp_number" value="{{ comp_number|default:'' }}" required autocomplete="off"></td>
+            <td></td>
+            <td></td>
+            <td>LAB:</td>
+            <td><input type="number" min="1" max="2" name="lab" value="{{ form_data.lab|default:'' }}" required autocomplete="off" placeholder="1 or 2"></td>
+        </tr>
+        <tr>
+            <td>DESKTOP SERIAL:</td>
+            <td><input type="text" name="serial_number" value="{{ form_data.serial_number|default:'' }}" required readonly autocomplete="off"></td>
+            <td></td>
+            <td></td>
+            <td>TFT SERIAL:</td>
+            <td><input type="text" name="TFT_serial" value="{{ TFT_serial|default:'' }}" required autocomplete="off"></td>
+        </tr>
+        <tr>
+            <td>WEBCAM SERIAL:</td>
+            <td><input type="text" name="WEB_serial" value="{{ WEB_serial|default:'' }}" required autocomplete="off"></td>
+            <td></td>
+            <td></td>
+            <td>HEADPHONE SERIAL:</td>
+            <td><input type="text" name="Head_serial" value="{{ Head_serial|default:'' }}" required autocomplete="off"></td>
+        </tr>
+        <tr>
+            <td>SWITCH SERIAL:</td>
+            <td><input type="text" name="Switch_serial" value="{{ Switch_serial|default:'' }}" required autocomplete="off"></td>
+            <td></td>
+            <td></td>
+            <td>REGISTRATION DATE:</td>
+            <td><input type="date" name="regDate" value="{{ current_date }}" required readonly autocomplete="off"></td>
+        </tr>
+        <tr>
+            <td colspan="6"><input type="hidden" name="Status" value="Inactive"></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td></td>
+            <td><button type="submit"> INSERT </button></td>
+        </tr>
+    </form>
+    </table>
+</body>
+<script>
+document.getElementById('InsertForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+
+    const serial = document.getElementById('serial_number').value;
+
+    fetch("/admin-site/api/form-data/", {
+        method: "POST",
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': '{{ csrf_token }}'
+        },
+        body: JSON.stringify({
+            action: "InsertData",
+            serial_number: serial
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        alert(data.message || data.error);
+        if (data.message) {
+            window.location.href = "{% url 'admin_home' %}";
+        }
+    })
+    .catch(error => console.error("Error:", error));
+});
+</script>
+{% if error %}
+<script>
+    alert("{{ error }}");
+</script>
+{% endif %}
+</html>

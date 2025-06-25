@@ -1,0 +1,39 @@
+{
+  "entries": [
+    {
+      "serial_number": "YJA6G4F317",
+      "date": "01/24/2025",
+      "start_time": "10:05:30",
+      "end_time": "10:10:30",
+      "duration": "00:05:00"
+    },
+    {
+      "serial_number": "YJA6G4F317",
+      "date": "09/22/2023",
+      "start_time": "13:12:38",
+      "end_time": "13:17:38",
+      "duration": "00:05:00"
+    },
+    {
+      "serial_number": "YJA6G4F317",
+      "date": "05/26/2021",
+      "start_time": "13:04:45",
+      "end_time": "13:09:45",
+      "duration": "00:05:00"
+    },
+    {
+      "serial_number": "YJA6G4F317",
+      "date": "03/13/2023",
+      "start_time": "14:03:27",
+      "end_time": "14:08:27",
+      "duration": "00:05:00"
+    },
+    {
+      "serial_number": "YJA6G4F317",
+      "date": "02/18/2023",
+      "start_time": "10:41:49",
+      "end_time": "10:46:49",
+      "duration": "00:05:00"
+    }
+  ]
+}

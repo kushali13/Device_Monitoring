@@ -1,0 +1,499 @@
+{% include 'monitor/navbar.html' %}
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Live Status</title>
+    <link rel="icon" type="image/png" href="{%static './cvrlogo.ico'%}" />
+    <!-- Google Font: Source Sans Pro -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,400i,700&display=swap" />
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="{%static 'plugins/fontawesome-free/css/all.min.css'%}" />
+    <!-- Theme style -->
+    <link rel="stylesheet" href="{%static 'dist/css/adminlte.min.css'%}" />
+    <!-- =============== Form ============ -->
+    <link rel="stylesheet" href="{%static 'plugins/select2/css/select2.min.css'%}">
+    <link rel="stylesheet" href="{%static 'plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css'%}">
+    <!-- DataTable -->
+    <link rel="stylesheet" type="text/css"
+        href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.7/css/dataTables.bootstrap5.min.css">
+    <script>
+        // Function to refresh the page every 2 minutes
+        function autoRefresh() {
+            location.reload();
+        }
+        // Set the auto-refresh interval to 2 minutes (120000 milliseconds)
+        setInterval(autoRefresh, 300000);
+    </script>
+    <style>
+        #loader-wrapper {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+
+        #loader {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, #0371a4, #58a404);
+            animation: pulse 1.5s ease-in-out infinite;
+            box-shadow: 0 0 20px rgb(157, 6, 84, 0.5);
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                transform: scale(0.8);
+                box-shadow: 0 0 20px rgba(255, 75, 43, 0.5);
+            }
+
+            50% {
+                transform: scale(1.2);
+                box-shadow: 0 0 40px rgba(255, 75, 43, 0.7);
+            }
+        }
+
+
+        #content-wrapper {
+            display: none;
+            /* Initially hide the content */
+        }
+
+        .card-body {
+            padding: 0.6rem;
+        }
+
+        .card-header {
+            padding: 0.5rem 1rem;
+        }
+
+        .content-header {
+            padding: 6px 0.5rem;
+        }
+
+        .main-footer {
+            padding: 0.5rem 1rem;
+        }
+
+        .navbar {
+            padding: 2px 2px !important;
+        }
+
+        table,
+        td,
+        th {
+            font-size: 13.9px;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 200;
+            font-size: 14px;
+        }
+
+        /*scrollbar*/
+        .scrollbar {
+            height: 200px;
+            overflow-y: auto;
+        }
+
+        /* Set the width and color of the scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+            background-color: #ADB5BD;
+            border-radius: 5px;
+        }
+
+        /* Add the thumb (the part you drag) */
+        ::-webkit-scrollbar-thumb {
+            border-radius: 5px;
+            background: linear-gradient(to bottom, #B8B8B8 0%, #8F8F8F 100%);
+        }
+
+        /* Change the color of the thumb on hover */
+        ::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(to bottom, #8F8F8F 0%, #B8B8B8 100%);
+        }
+
+        /* Add the track (the empty space around the thumb) */
+        ::-webkit-scrollbar-track {
+            background-color: #f5f5f5;
+            border-radius: 1px;
+        }
+
+        .card-title {
+            float: left;
+            font-size: 1.5rem;
+            font-weight: 400;
+            margin: 0;
+        }
+
+        .bg {
+            background: linear-gradient(to bottom, #2196F3, #0D47A1);
+            border: none;
+        }
+
+        .bg:hover {
+            transition: 0.3s;
+            background: linear-gradient(to top, #0088f5, #01378a);
+        }
+
+        @media print {
+            body * {
+                visibility: hidden;
+            }
+
+            table,
+            table * {
+                visibility: visible;
+
+            }
+
+            th {
+                font-weight: 200;
+                font-size: 14px;
+            }
+
+            td {
+
+                border-color: inherit;
+                border-style: solid;
+                border-width: 0;
+                font-size: 10px;
+            }
+
+            table {
+                position: absolute;
+                left: 0;
+                top: 0;
+            }
+        }
+
+        .table td,
+        .table th {
+            padding: 0.3rem;
+            vertical-align: center;
+            border-top: 1px solid #dee2e6;
+        }
+
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+
+<body class="hold-transition sidebar-mini layout-fixed">
+    <!-- Loader 
+  <div id="loader-wrapper">
+    <div id="loader"></div>
+  </div>-->
+    <div class="wrapper">
+        <!-- Preloader -->
+            <div class="preloader flex-column justify-content-center align-items-center">
+                <img class="animation__shake" src="{%static 'cienciaslogo.png' %}" alt="Ciencias" height="100" width="100" />
+            </div>
+       
+        <!-- ============Content Wrapper ========= -->
+
+        <div class="content-wrapper">
+            <div class="content-header">
+                <div class="container-fluid">
+                    <div class="row mb-2">
+                        <div class="col-sm-6">
+                            <h1 class="m-0">Live Device Status </h1>
+                        </div>
+                        <div class="col-sm-6" style="padding-top: 5px;">
+                            <ol class="breadcrumb float-sm-right">
+                                <li class="breadcrumb-item"><a href="{%url 'index'%}">Home</a></li>
+                                <li class="breadcrumb-item active">Live Status</li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <section class="content" id="content">
+                <div class="container-fluid">
+                    <!-- =====Form===== -->
+                    <div class="card card-default  shadow">
+                        <div class="card-body">
+                            <form method="POST"  id="myform">
+                                {% csrf_token %}
+                                <div class="row">
+                                    <div class="col-md-2">
+                                        <div class="form-group">
+                                            <label>District</label>
+                                            <select class="form-control select2bs4" style="width: 100%" id="district" name="district" onchange="document.getElementById('myform').submit();">
+                                                <option value="">Please Select</option>
+                                                {% for d in districts %}
+                                                    <option value="{{ d }}" {% if selected_district == d %}selected{% endif %}>{{ d }}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <div class="form-group">
+                                            <label>Block</label>
+                                            <select class="form-control select2bs4" style="width: 100%" name="block"
+                                                onchange="document.getElementById('myform').submit();">
+                                            <option value="">Select Block</option>
+                                                {% for b in blocks %}
+                                                    <option value="{{ b }}" {% if selected_block == b %}selected{% endif %}>{{ b }}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <div class="form-group">
+                                            <label>Village</label>
+                                            <select class="form-control select2bs4" style="width: 100%" name="village"
+                                                onchange="document.getElementById('myform').submit();">
+                                                <option value="">Select Village</option>
+                                                    {% for v in villages %}
+                                                        <option value="{{ v }}" {% if selected_village == v %}selected{% endif %}>{{ v }}</option>
+                                                    {% endfor %}
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <div class="form-group">
+                                            <label>School Name</label>
+                                            <select class="form-control select2bs4" style="width: 100%" name="school"onchange="document.getElementById('myform').submit();">
+                                                <option value="">Select School</option>
+                                                    {% for s in schools %}
+                                                        <option value="{{ s }}" {% if selected_school == s %}selected{% endif %}>{{ s }}</option>
+                                                    {% endfor %}
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <div class="form-group">
+                                            <label>Filter by</label>
+                                            <select class="form-control select2bs41" style="width: 100%" name="status"onchange="document.getElementById('myform').submit();">
+                                                <option value="active"{% if selected_status == active %}selected{% endif %}>{{ active }}Active</option>
+                                                <option value="inactive"{% if selected_status == inactive %}selected{% endif %}>{{ inactive }}Inactive</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <div class="form-group mt-4 pt-2">
+                                            <input type="submit" class="btn bg rounded-1 btn-primary btn-md w-50"
+                                                name="generate" value="Search">
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <section class="col-lg-12">
+                            <div class="card">
+                                <div class="card-header bg-olive">
+                                    <!-- <div class="row"> -->
+                                    <!-- <div class="col-lg-2 col-md-2 col-sm-6"> -->
+                                    <!--<h3 class="card-title pt-1"><i class="fas fa-list mr-3"></i>List of Desktops</h3>-->
+                                    <!-- </div> -->
+                                    <!-- </div> style="height: 460px" -->
+                                    <div class="row">
+                                        <div class="col-4">
+                                            <h3 class="card-title pt-1 float-left"><i class="fas fa-list mr-3"></i>List
+                                                Of Desktops</h3>
+                                        </div>
+                                        <div class="col-6"></div>
+                                        <div class="col-2">
+                                            <h5 class=" pt-2 float-right">Total Devices:
+                                                {{ tot|default:"00" }}
+                                            </h5>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-body  shadow">
+                                    <div class="table-responsive  "
+                                        style="height: auto; max-height: 540px;">
+                                        <div class="tale-container">
+                                            <table
+                                                class="table table-head-fixed table-striped text-nowrap  table-bordered "
+                                                id="myTable" style="top: 0; width: 100%">
+                                                <thead class="fixed-header">
+                                                    <tr>
+                                                        <th class="text-center">Sr</th>
+                                                        <th class="text-center">DISE Code</th>
+                                                        <th class="text-center">School</th>
+                                                        <th class="text-center">Device Serial Number</th>
+                                                        <th class="text-center">Village</th>
+                                                        <th class="text-center">Block</th>
+                                                        <th class="text-center">District</th>
+                                                        <th class="text-center">Status</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    {% if has_matching_assets %}
+                                                        {% for school in table_data %}
+                                                            {% if school.filtered_assets %}
+                                                                {% for asset in school.filtered_assets %}
+                                                                    <tr>
+                                                                        <td class="text-center">{{ asset.sr_no }}</td>
+                                                                        <td class="text-center">{{ school.dise_code }}</td>
+                                                                        <td class="text-center">{{ school.school_name }}</td>
+                                                                        <td class="text-center">{{ asset.serial_number }}</td>
+                                                                        <td class="text-center">{{ school.village }}</td>
+                                                                        <td class="text-center">{{ school.block }}</td>
+                                                                        <td class="text-center">{{ school.district }}</td>
+                                                                        <td class="text-center">{{ asset.status }}</td>
+                                                                    </tr>
+                                                                {% endfor %}
+                                                            {% endif %}
+                                                        {% endfor %}
+                                                    {% else %}
+                                                        <tr>
+                                                            <td colspan="8" class="text-center text-danger">
+                                                                <strong>No data found for this Status.</strong>
+                                                            </td>
+                                                        </tr>
+                                                    {% endif %}
+                                                </tbody>
+
+
+                                            </table>
+                                        </div>
+                                    </div>
+                                   
+                                </div>
+                        </section>
+                    </div>
+                </div>
+            </section>
+        </div>
+        <!-- =====Footer===== -->
+        <footer class="main-footer">
+            <strong>Copyright &copy; 2023-2025
+                <a href="https://cienciasvr.com/" target="_blank">Ciencias IN VR</a>.</strong>
+            All rights reserved.
+            <div class="float-right d-none d-sm-inline-block">
+                <b>Version</b> 0.0.1
+            </div>
+
+        </footer>
+
+    </div>
+    <script>
+        function change() {
+            document.getElementById("myform").submit();
+        }
+    </script>
+    <!-- jQuery -->
+    <script src="{%static 'plugins/jquery/jquery.min.js'%}"></script>
+    <!-- jQuery UI 1.11.4 -->
+    <script src="{%static 'plugins/jquery-ui/jquery-ui.min.js'%}"></script>
+    <!-- Bootstrap 4 -->
+    <script src="{%static 'plugins/bootstrap/js/bootstrap.bundle.min.js'%}"></script>
+    <!-- AdminLTE App -->
+    <script src="{%static 'dist/js/adminlte.js'%}"></script>
+    <!-- ======================== FORM ====================== -->
+    <script src="{%static 'plugins/select2/js/select2.full.min.js'%}"></script>
+    <script>
+        // script.js
+        window.addEventListener("load", function () {
+            // Hide the loader
+            var loaderWrapper = document.getElementById("loader-wrapper");
+            loaderWrapper.style.display = "none";
+
+            // Show the content
+            var content = document.getElementById("content-wrapper");
+            content.style.display = "block";
+        });
+
+    </script>
+    <!-- DataTable -->
+    <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.7/js/dataTables.bootstrap5.min.js"></script>
+    <!--<script>-->
+    <!--    $(document).ready(function() {-->
+    <!--        $('#myTable').DataTable({-->
+    <!--            "pageLength": 15,-->
+    <!--"lengthMenu": [15, 25, 50, 75, 100], // Optional: To include different page lengths in the dropdown-->
+    <!--"paging": true, // Enable pagination-->
+    <!--"ordering": false, // Enable sorting-->
+    <!--"searching": true, // Enable search box-->
+    <!--"info": true, // Show information-->
+    <!--//"scrollX": true, // Enable horizontal scrolling-->
+    <!--            "responsive": true,-->
+    <!--        });-->
+    <!--    });-->
+    <!--</script>-->
+
+    <script>
+        function printTable() {
+            window.print();
+        }
+
+        function exportTableToCSV(filename) {
+            // Get the table data as an array
+            var rows = document.querySelectorAll('table tr');
+            var data = [];
+            for (var i = 0; i < rows.length; i++) {
+                var row = [],
+                    cols = rows[i].querySelectorAll('td, th');
+                for (var j = 0; j < cols.length; j++) {
+                    row.push(cols[j].innerText);
+                }
+                data.push(row.join(','));
+            }
+
+            // Create a CSV string
+            var csvString = data.join('\n');
+
+            // Create a download link and click it to download the CSV file
+            var link = document.createElement('a');
+            link.href = 'data:text/csv;charset=utf-8,' + encodeURIComponent(csvString);
+            link.download = filename;
+            link.style.display = 'none';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+    </script>
+    <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.7/js/dataTables.bootstrap5.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#myTable').DataTable({
+                "pageLength": 10,
+                "lengthMenu": [10, 25, 50, 75, 100], // Optional: To include different page lengths in the dropdown
+                "paging": true, // Enable pagination
+                "ordering": false, // Enable sorting
+                "searching": true, // Enable search box
+                "info": true, // Show information
+                //"scrollX": true, // Enable horizontal scrolling
+                "responsive": true,
+            });
+        });
+    </script>
+    
+    <script>
+        //Initialize Select2 Elements
+        $('.select2').select2();
+        //Initialize Select2 Elements
+        $('.select2bs4').select2({
+            theme: 'bootstrap4',
+            placeholder: 'Please Select'
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,80 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet" />
+    <title>Document</title>
+    <link rel="icon" href="{% static 'Cvrlogo.ico' %}" />
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            padding-left: 40%;
+            margin-top: 200px;
+            text-align: center;
+            background-color: #f4f6f9;
+        }
+
+        .input-container {
+            width:30%;
+            height:50%;
+            background-color:white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 20%;
+            margin-bottom: 20%;
+            border: 1px solid #e7e4fe;
+            border-radius: 18px;
+            padding-top: 40px;
+            padding-bottom:40px;
+            justify-content: center;
+            box-shadow: 0 0 50px rgba(27, 26, 26, 0.1);
+            
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            margin-bottom:20px;
+            background: linear-gradient(to bottom, #2196F3, #0D47A1);
+            border: none;
+        }
+        
+
+        button:hover {
+            background-color: #78638b;
+        }
+    </style>
+</head>
+<body>
+    <div class="input-container">
+        <form method="post" action="{% url 'insert' %}"style="margin-top:15px;">
+            {% csrf_token %}
+            <button> ADD </button>
+        </form>
+        <br><br><br>
+        <form method="post" action="{% url 'update' %}">
+            {% csrf_token %}
+            <button> UPDATE </button>
+        </form>
+        <br><br><br>
+        <form method="post" action="{% url 'delete' %}">
+            {% csrf_token %}
+            <button> REMOVE </button>
+        </form>
+    </div>
+</body>
+
+</html>
