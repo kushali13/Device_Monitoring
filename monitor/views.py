@@ -18,7 +18,7 @@ import io
 from django.db.models import Count
 from django.http import HttpResponse
 
-
+#download device details in pdf
 def download_pdf_device(request):
     queryset = request.session.get('timing_logs', [])
 
@@ -67,6 +67,7 @@ def download_pdf_device(request):
     response['Content-Disposition'] = 'attachment; filename="timing_report_device.pdf"'
     return response
 
+#download activity details in pdf
 def download_pdf_activity(request):
     queryset = request.session.get('timing_logs', [])
 
