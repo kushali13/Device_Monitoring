@@ -76,6 +76,46 @@ This is a Django-based system for monitoring computer lab assets in schools acro
 
 ---
 
+## User Experience
+
+- Simple navigation with clear menus
+- Quick search for schools or assets
+- Mobile-friendly admin pages
+- Error messages are direct and easy to understand
+- Most actions need only a few clicks
+
+## Maintenance & Support
+
+- Regular database backups recommended
+- Admins can add or update school/device info anytime
+- Log files help track issues or failed logins
+- Static files (like images) should be optimized for faster loading
+
+## Security Practices
+
+- Passwords are hashed and never stored in plain text
+- Only authorized users can access admin features
+- All forms use CSRF protection by default
+- User sessions expire after inactivity
+
+## Typical Workflow
+
+1. Admin logs in
+2. Adds a new school or updates info
+3. Registers new devices/assets
+4. Monitors device status on dashboard
+5. Downloads reports as needed
+
+## Future Improvements (Ideas)
+
+- SMS/email alerts for device issues
+- More detailed user roles (e.g., district admin)
+- Integration with external asset management tools
+- Real-time device health monitoring
+- Multi-language support for wider reach
+
+---
+
 ## Summary
 The system is simple to use and helps manage devices in schools efficiently. It’s built with Django, has a clean admin UI, and supports useful analytics and reporting for better monitoring.
 
